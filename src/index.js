@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import { App } from 'components/App';
 import './index.css';
 
@@ -10,9 +11,11 @@ import { Provider } from "react-redux";
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
-      {/* <PersistGate loading={<h2>Reloading contacts from the last session...</h2>} persistor={persistor}> */}
-        <App />
-      {/* </PersistGate> */}
+      <BrowserRouter>
+        {/* <PersistGate loading={<h2>Reloading contacts from the last session...</h2>} persistor={persistor}> */}
+          <App />
+        {/* </PersistGate> */}
+      </BrowserRouter>     
     </Provider>
   </React.StrictMode>
 );

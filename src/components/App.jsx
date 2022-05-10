@@ -1,21 +1,20 @@
 //import {useState} from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { lazy, Suspense } from "react";
+import { useSelector } from "react-redux";
 
-import ContactForm from "./ContactForm";
-import Filter from "./Filter";
-import ContactList from "./ContactList";
+import { selectLoginStatus } from "redux/auth/authSlice";
 
-// const DUMMY_CONTACTS = [
-//   {id: 'KindLady', name: 'Athene Margoulis', number: '459-12-56'},
-//   {id: 'Nucl3arSnake', name: 'Francis Pritchard', number: '443-89-12'},
-//   {id: 'FlyGirl', name: 'Faridah Malik', number: '645-17-79'},
-//   {id: 'TyphoonMaster', name: 'Vasili Shevchenko', number: '227-91-26'},
-// ];
+import NavBar from "./NavBar";
+import UserMenu from "./UserMenu";
+const ContactsPage = lazy(() => import("./Layouts/ContactsPage"));
+const LoginPage = lazy(() => import("./Layouts/LoginPage"));
+const RegisterPage = lazy(() => import("./Layouts/RegisterPage"));
 
 export const App = () => {
-
-
+  const isLoggedIn = useSelector(selectLoginStatus);
 
   return (
     <div
@@ -28,22 +27,30 @@ export const App = () => {
         paddingRight: 50,
       }}
     >
-      <h1>Phonebook</h1>
-      <ContactForm
-        //onSubmit={(newContact) => {addContact(newContact)}}
-      />
+      <NavBar />
+      {isLoggedIn && <UserMenu />}
 
-      <h2>Contacts</h2>
+      <Routes>
+        <Route exact path="/" element={
+          <Suspense fallback={<p>Loading...</p>}>
+            <LoginPage />
+          </Suspense>  
+        }/>
 
-      <Filter
-        //value={filter}
-        //onChange={onFilterChange}
-      />
+        <Route exact path="/register" element={
+          <Suspense fallback={<p>Loading...</p>}>
+            <RegisterPage />
+          </Suspense>
+        }/>
 
-      <ContactList
-        //contacts={contacts}
-        //filter={filter}
-      />
+        <Route exact path="/contacts" element={
+          <Suspense fallback={<p>Loading...</p>}>
+            <ContactsPage />
+          </Suspense>   
+        } />
+
+        <Route path="*" element={<Navigate to={"/"} replace={true} />} />
+      </Routes>
       <ToastContainer />
     </div>
   );

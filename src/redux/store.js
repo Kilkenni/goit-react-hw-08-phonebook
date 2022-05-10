@@ -4,18 +4,29 @@ import { configureStore } from "@reduxjs/toolkit";
 import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 
 import contactsReducer from "./contacts/contactsReducer";
-//import itemsReducer from "./contacts/items";
-//import filterReducer from "./contacts/filter";
+import authReducer from "./auth/authSlice";
 
-// const DUMMY_CONTACTS = [
-//   {id: 'KindLady', name: 'Athene Margoulis', number: '459-12-56'},
-//   {id: 'Nucl3arSnake', name: 'Francis Pritchard', number: '443-89-12'},
-//   {id: 'FlyGirl', name: 'Faridah Malik', number: '645-17-79'},
-//   {id: 'TyphoonMaster', name: 'Vasili Shevchenko', number: '227-91-26'},
-// ];
+//reference for store structure
+const INIT_STORE = {
+  auth: {
+    user: {
+      name: null,
+      email: null,
+      token: null,
+    },
+    error: null,
+  },
+  contacts: {
+    items: null,
+    filter: "",
+    status: "idle", // idle | operation-type | success | error
+    error: null,
+  },
+};
 
 export const store = configureStore({
   reducer: {
+    auth: authReducer,
     contacts: contactsReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -24,14 +35,7 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
-  preloadedState: {
-    contacts: {
-      items: null,
-      filter: "",
-      status: "idle", // idle | operation-type | success | error
-      error: null,
-    }
-  },
+  preloadedState: {...INIT_STORE},
 });
 
 //export const persistor = persistStore(store);

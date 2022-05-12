@@ -40,13 +40,13 @@ export const App = () => {
       }}
     >
       <NavBar />
-      {isLoggedIn && <UserMenu />}
+      {(isLoggedIn && !isRestoringSession ) && <UserMenu />}
 
       {isRestoringSession ?
         <p>Restoring last session...</p>
         :
         <Routes>
-          <Route exact path="/" element={
+          <Route exact path="/login" element={
             <RestrictedRoute fallbackRoute={"/contacts"}>
               <Suspense fallback={<p>Loading...</p>}>
                 <LoginPage />
@@ -70,7 +70,7 @@ export const App = () => {
             </PrivateRoute>
           } />
 
-          <Route path="*" element={<Navigate to={"/"} replace={true} />} />         
+          <Route path="*" element={<Navigate to={"/login"} replace={true} />} />         
         </Routes>
       }
       

@@ -6,7 +6,6 @@ import { selectIsLoggedIn } from "redux/auth/authSlice";
 export default function RestrictedRoute({ children, fallbackRoute = "/" }) {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const location = useLocation();
-  console.log(location)
 
   if (location.pathname === fallbackRoute) {
     throw new Error("RestrictedRoute should NOT redirect to itself!")

@@ -35,7 +35,7 @@ const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
 const selectUserName = (state) => state.auth.user.user.name;
 const selectUserEmail = (state) => state.auth.user.user.email;
 const selectUserToken = (state) => state.auth.user.token;
-const selectIsRestoringSession = (state) => state.auth.user.isRestoringSession;
+const selectIsRestoringSession = (state) => state.auth.isRestoringSession;
 
 export {INIT_AUTH};
 export { selectIsLoggedIn, selectIsRestoringSession, selectUserName, selectUserEmail, selectUserToken };

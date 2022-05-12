@@ -12,13 +12,12 @@ import NavBar from "./NavBar";
 import UserMenu from "./UserMenu";
 import LoginMenu from "./LoginMenu/LoginMenu";
 import { RestrictedRoute, PrivateRoute } from "./Routes";
-//import NotFoundPage from "./Layouts/NotFoundPage";
+import NotFoundPage from "./Layouts/NotFoundPage";
 import style from "./App.module.css";
 
 const ContactsPage = lazy(() => import("./Layouts/ContactsPage"));
 const LoginPage = lazy(() => import("./Layouts/LoginPage"));
 const RegisterPage = lazy(() => import("./Layouts/RegisterPage"));
-
 
 
 export const App = () => {
@@ -79,7 +78,11 @@ export const App = () => {
             </PrivateRoute>
           } />
 
-          <Route path="*" element={<Navigate to={"/login"} replace={true} />} />         
+          <Route exact path="/route-not-found" element={
+            <NotFoundPage />
+          } />
+
+          <Route path="*" element={<Navigate to={"/route-not-found"} />} />         
         </Routes>
       }
       

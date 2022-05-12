@@ -11,6 +11,7 @@ import { refreshUserOp } from "redux/auth/ops";
 import NavBar from "./NavBar";
 import UserMenu from "./UserMenu";
 import { RestrictedRoute, PrivateRoute } from "./Routes";
+//import NotFoundPage from "./Layouts/NotFoundPage";
 const ContactsPage = lazy(() => import("./Layouts/ContactsPage"));
 const LoginPage = lazy(() => import("./Layouts/LoginPage"));
 const RegisterPage = lazy(() => import("./Layouts/RegisterPage"));

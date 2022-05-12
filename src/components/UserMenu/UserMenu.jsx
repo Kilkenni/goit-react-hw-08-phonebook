@@ -4,6 +4,9 @@ import { useDispatch } from "react-redux";
 
 import { selectUserName, selectUserEmail } from "redux/auth/authSlice";
 import { logoutUserOp } from "redux/auth/ops";
+import Button from "components/Button";
+
+import style from "./UserMenu.module.css";
 
 export default function UserMenu(props) {
   
@@ -21,10 +24,15 @@ export default function UserMenu(props) {
   }
 
   return (
-    <div>
-      <p>You have logged in as {userEmail}</p>
-      <p>Hi, { userName}!</p>
-      <button type="button" onClick={logout}>Logout</button>
+    <div className={style.container}>
+      <p className={style.greeting}>
+        Logged in as {userEmail}.
+        <br />
+        Hi, {userName}!
+      </p>
+      <Button type={"button"} onClick={logout} label={"Log out"}/>
+      
+      {/* <button type="button" onClick={logout}>Logout</button> */}
     </div>
     );
 }

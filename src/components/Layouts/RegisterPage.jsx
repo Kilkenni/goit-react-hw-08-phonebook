@@ -4,6 +4,9 @@ import { useDispatch } from "react-redux";
 
 import { registerUserOp } from "redux/auth/ops/registerUserOp";
 
+import style from "./RegisterPage.module.css";
+import sharedFormStyle from "../ContactForm/ContactForm.module.css";
+
 const INIT_CREDS = {
   name: "",
   email: "",
@@ -29,47 +32,53 @@ export default function RegisterPage(props) {
       return false;
     }*/
 
-    //console.log(`posting ${credentials} to server as new user`);
     dispatch(registerUserOp(credentials));
-    // const response = await registerUser(credentials);
-    // console.log(response);
 
     setCredentials({ ...INIT_CREDS });
   }
 
   return (
-    <form action="submit" onSubmit={onFormSubmit}>
-      <label htmlFor="name">Name
-        <p>This name will be used to address you as a user</p>
+    <form action="submit" onSubmit={onFormSubmit} className={[sharedFormStyle.formAddContact, style.form].join(" ")}>
+      <label htmlFor="name" className={sharedFormStyle.formLabel}>
+        Name
+        <input
+          type="text"
+          name="name"
+          required
+          onChange={onInputChange}
+          value={credentials.name}
+          className={sharedFormStyle.formInput}
+        />
       </label>
-      <input
-        type="text"
-        name="name"
-        required
-        onChange={onInputChange}
-        value={credentials.name}
-      />
-      <label htmlFor="email">E-mail
-        <p>Your e-mail address. Will be used to log in.</p>
+      <p className={ style.hint}>This name will be used to address you as a user</p>
+      
+      <label htmlFor="email" className={sharedFormStyle.formLabel}>
+        E-mail
+        <input
+          type="email"
+          name="email"
+          required
+          onChange={onInputChange}
+          value={credentials.email}
+          className={sharedFormStyle.formInput}
+        />
       </label>
-      <input
-        type="email"
-        name="email"
-        required
-        onChange={onInputChange}
-        value={credentials.email}
-      />
-      <label htmlFor="password">Password
-        <p>Your password to log in. Keep it safe!</p>
-      </label>
-      <input
-        type="password"
-        name="password"
-        required
-        onChange={onInputChange}
-        value={credentials.password}
-      />
-      <button type="submit">Register</button>
+      <p className={ style.hint}>Will be used to log in</p>
+      
+      <label htmlFor="password" className={sharedFormStyle.formLabel}>
+        Password
+        <input
+          type="password"
+          name="password"
+          required
+          onChange={onInputChange}
+          value={credentials.password}
+          className={sharedFormStyle.formInput}
+        />
+      </label>   
+      <p className={ style.hint}>Keep it safe!</p>
+
+      <button type="submit" className={sharedFormStyle.formBtnSubmit}>Register</button>
     </form>
     );
 }

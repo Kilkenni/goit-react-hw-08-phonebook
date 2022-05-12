@@ -6,7 +6,7 @@ export default function NotFoundPage() {
     <h2 className={style.title}>404 Page not found</h2>
     <img
       src={image}
-      alt="Page not found image"
+      alt="Page not found"
       width="400" height="auto"
       className={style.image}
     />

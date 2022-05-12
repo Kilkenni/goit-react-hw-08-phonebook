@@ -71,7 +71,7 @@ export const App = () => {
           }/>
 
           <Route exact path="/contacts" element={
-            <PrivateRoute>
+            <PrivateRoute fallbackRoute={"/login"}>
               <Suspense fallback={<p>Loading page...</p>}>
                 <ContactsPage />
               </Suspense>
@@ -82,7 +82,9 @@ export const App = () => {
             <NotFoundPage />
           } />
 
-          <Route path="*" element={<Navigate to={"/route-not-found"} />} />         
+          <Route path="/" element={<Navigate to={"/login"} replace={true} />} /> 
+
+          <Route path="*" element={<Navigate to={"/route-not-found"} replace={true} />} />         
         </Routes>
       }
       

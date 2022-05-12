@@ -1,16 +1,30 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { addContact } from "js/mockAPI";
+
+import { postContact } from "js/connectionsAPI";
+import { filterAxiosError } from "js/serializeAxiosData";
+import { selectUserToken } from "redux/auth/authSlice";
 
 import { toast } from "react-toastify";
 
-export const addContactOperation = createAsyncThunk(
+export const addContactOp = createAsyncThunk(
   "items/addContact",
   async (contact, thunkAPI) => {
-    const response = await addContact(contact);
-    if (response.status !== 201) {
-      return thunkAPI.rejectWithValue({ code: response.status, message: response.statusText });
-      //if our POST fails, mark the entire promise as rejected and pass axios status as an "error message"
+    let response;
+    const token = selectUserToken(thunkAPI.getState());
+
+    try {
+      response = await postContact(contact, token);
     }
+    catch (error) {
+      if (error.name === "AxiosError") {
+        const serializedError = filterAxiosError(error);
+        return thunkAPI.rejectWithValue(serializedError);
+      }
+      else {
+        throw error; //throw further
+      }
+    }
+
     return response.data;
   },
   {
@@ -18,11 +32,6 @@ export const addContactOperation = createAsyncThunk(
       //pre-check against current Redux state: what if the contact already exists? Comparison by name.
       //Normally a backend should do this but mockapi, being a "test api", is not capable of that
       const { contacts } = getState();
-      /*const { status } = contacts;
-      if (status !== "idle" && status !== "success" && status !== "error") {
-        toast.warn(`Another operation - ${status} - is in progress. Try again later.`);
-        return false;
-      };*/
 
       const contactList = (contacts && contacts.items) ? contacts.items : [];
       
@@ -37,5 +46,5 @@ export const addContactOperation = createAsyncThunk(
         return false; //abort POST
       };
     },
-  }
+  },
 );

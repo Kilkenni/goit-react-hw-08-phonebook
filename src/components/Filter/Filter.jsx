@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 //import propTypes from "prop-types";
 import styles from "./Filter.module.css";
 
-import { update, selectFilter } from "redux/contacts/filter";
+import { updateFilter } from "redux/contacts/filter";
+import { selectFilter } from "redux/contacts/contactsSlice";
 
 const Filter = (/*{ value, onChange }*/) => {
   const value = useSelector(selectFilter);
@@ -13,7 +14,7 @@ const Filter = (/*{ value, onChange }*/) => {
 
   function onFilterChange(event) {
     //todo debounce
-    dispatch(update(event.currentTarget.value));
+    dispatch(updateFilter(event.currentTarget.value));
 
   }
 

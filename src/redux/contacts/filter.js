@@ -1,12 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-//making this part with createSlice for practice
-
 const contactFilterSlice = createSlice({
   name: "filter",
   initialState: "",
   reducers: {
-    update(filter, action) {
+    updateFilter(filter, action) {
       if (action.payload === filter) { 
         return filter;
       }
@@ -17,9 +15,5 @@ const contactFilterSlice = createSlice({
   },
 });
 
-export function selectFilter(state) {
-  return state.contacts.filter;
-}
-
-export const { update } = contactFilterSlice.actions;
+export const { updateFilter } = contactFilterSlice.actions;
 export default contactFilterSlice.reducer;

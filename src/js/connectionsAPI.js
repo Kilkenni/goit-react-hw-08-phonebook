@@ -48,7 +48,7 @@ export function refreshUser(token) {
 
 //CONTACT-related requests
 
-export function getContacts(token) {
+export function fetchContacts(token) {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -58,7 +58,7 @@ export function getContacts(token) {
 }
 
 
-export function addContact(newContact, token) {
+export function postContact(newContact, token) {
   /*
   newContact = {
     "name": "Jacob Mercer",
@@ -73,7 +73,7 @@ export function addContact(newContact, token) {
   return axios.post(baseURL + "/contacts", newContact, config);
 }
 
-export function deleteContact(id, token) {
+export function delContact(id, token) {
   const deleteURL = baseURL + "/contacts/" + id.toString();
   const config = {
     headers: {
@@ -83,7 +83,7 @@ export function deleteContact(id, token) {
   return axios.delete(deleteURL, config);
 }
 
-export function updateContact(id, updatedContact, token) {
+export function patchContact(id, updatedContact, token) {
   /*
   updatedContact = same schema as for new contact
   */
@@ -95,3 +95,4 @@ export function updateContact(id, updatedContact, token) {
   };
   return axios.patch(updateURL, updatedContact, config);
 }
+

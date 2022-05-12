@@ -4,12 +4,12 @@ import { useState } from "react";
 //import propTypes from "prop-types";
 import style from "./ContactForm.module.css"
 
-import { addContactOperation } from "redux/contacts/asyncOperations";
-import { selectStatus } from "redux/contacts/status";
+import { addContactOp } from "redux/contacts/ops";
+import { selectStatus } from "redux/contacts/contactsSlice";
 
 const INIT_STATE = {
     name: "",
-    phone: "", //phone
+    number: "", //phone
 }
 
 export default function ContactForm (/*{onSubmit}*/) {
@@ -28,7 +28,7 @@ export default function ContactForm (/*{onSubmit}*/) {
         event.preventDefault();
         
         //dispatch(addContact(contact));
-        dispatch(addContactOperation(contact));
+        dispatch(addContactOp(contact));
         setContact({ ...INIT_STATE });
     };
 
@@ -66,12 +66,12 @@ export default function ContactForm (/*{onSubmit}*/) {
             <label className={style.formLabel}>Phone number
                 <input
                     type="tel"
-                    name="phone"
+                    name="number"
                     pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                     required
                     onChange={onInputChange}
-                    value={contact.phone}
+                    value={contact.number}
                     className={style.formInput}
                 />
             </label>

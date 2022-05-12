@@ -1,29 +1,37 @@
 import { createReducer } from "@reduxjs/toolkit";
-
-//import { getContactsError } from "./items";
-import { getContactsOperation, addContactOperation, deleteContactOperation } from "./asyncOperations";
-
 import { toast } from "react-toastify";
 
+import { getContactsOp, addContactOp, deleteContactOp } from "./ops";
+
 export const contactError = createReducer(null, {
-  [getContactsOperation.rejected]: (error, action) => {
-    //console.log(action.payload)
-    if (action.error.code === "ERR_BAD_REQUEST") {
-      toast.info("No contacts available on the server. Try adding some?",{autoClose: 2000});
+  [getContactsOp.rejected]: (error, action) => {
+     if (action.payload) {
+      //extended Axios error processing
+      const { status, statusText } = action.payload;
+
+      const extendedReason = status === 401? "You are not logged in or your token is invalid." : "";
+
+      toast.error(
+        <>
+          <p>Unable to retrieve contacts from the server.</p>
+          <p>Error code {status}, message: {statusText}. {extendedReason}</p>
+        </>
+      );
+      return action.payload; //write extended error info into redux
     }
     else {
-      toast.error(`Server GET request failed with code ${action.error.code} and message: ${action.error.message}.`, {autoClose: 2000});
+      toast.error(`Failed to retrieve contacts from the server. Error code ${action.error.code}, message: ${action.error.message}.`, { autoClose: 2000 });
     }
     return action.error; //write error into status
   },
 
-  [addContactOperation.rejected]: (error, action) => {
-    toast.error(`Server POST request failed with code ${action.error.code} and message: ${action.error.message}.`, {autoClose: 2000});
+  [addContactOp.rejected]: (error, action) => {
+    toast.error(`Failed to add contact to the server. Error code ${action.error.code}, message: ${action.error.message}.`, {autoClose: 2000});
     return action.error; //write error into status
   },
 
-  [deleteContactOperation.rejected]: (error, action) => {
-    toast.error(`Server DELETE request failed with code ${action.error.code} and message: ${action.error.message}.`, {autoClose: 2000});
+  [deleteContactOp.rejected]: (error, action) => {
+    toast.error(`Failed to delete contact from the server. Error code ${action.error.code}, message: ${action.error.message}.`, {autoClose: 2000});
     return action.error; //write error into status
   },
 });

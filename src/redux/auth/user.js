@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { registerUserOp, loginUserOp } from "./ops";
+import { registerUserOp, loginUserOp, logoutUserOp, refreshUserOp } from "./ops";
 
 const INIT_USER = {
   user: {
@@ -13,7 +13,11 @@ const INIT_USER = {
 const userSlice = createSlice({
   name: "user",
   initialState: { ...INIT_USER },
-  reducers: {},
+  reducers: {
+    resetToken(user) {
+      return { ...user, token: null };
+    },
+  },
   extraReducers: {
     [registerUserOp.fulfilled]: (user, action) => {
       //console.log(action.payload);
@@ -23,8 +27,18 @@ const userSlice = createSlice({
     [loginUserOp.fulfilled]: (user, action) => {
       return action.payload;
     },
+
+    [logoutUserOp.fulfilled]: (user, action) => {
+      return {...INIT_USER};
+    },
+
+    [refreshUserOp.fulfilled]: (user, action) => {
+      return {...user, user: action.payload }; //could use IMMER but decided not to
+    },
   },
 });
 
+export { INIT_USER };
+export const { resetToken } = userSlice.actions;
 export default userSlice.reducer;
 

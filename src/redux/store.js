@@ -1,21 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-//import { persistStore } from 'redux-persist';
+import { persistStore } from 'redux-persist';
 import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 
-import contactsReducer from "./contacts/contactsReducer";
+import contactsReducer from "./contacts/contactsSlice";
 import authReducer from "./auth/authSlice";
+import { INIT_AUTH } from "./auth/authSlice";
 
 //reference for store structure
 const INIT_STORE = {
-  auth: {
-    user: {
-      name: null,
-      email: null,
-      token: null,
-    },
-    error: null,
-  },
+  auth: INIT_AUTH,
   contacts: {
     items: null,
     filter: "",
@@ -38,4 +32,5 @@ export const store = configureStore({
   preloadedState: {...INIT_STORE},
 });
 
-//export const persistor = persistStore(store);
+export const persistor = persistStore(store);
+export const storeDispatch = store.dispatch;

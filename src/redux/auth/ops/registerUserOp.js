@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { registerUser } from "js/connectionsAPI";
 
-import { filterAxiosError } from "js/filterAxiosError";
+import { filterAxiosError } from "js/serializeAxiosData";
 
 export const registerUserOp = createAsyncThunk(
   "auth/registerUser",

@@ -1,15 +1,20 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { loginUser } from "js/connectionsAPI";
+import { logoutUser } from "js/connectionsAPI";
+import { selectUserToken } from "../authSlice";
 
 import { filterAxiosError } from "js/serializeAxiosData";
 
-export const loginUserOp = createAsyncThunk(
-  "auth/loginUser",
-  async (userCreds, thunkAPI) => {
+export const logoutUserOp = createAsyncThunk(
+  "auth/logoutUser",
+  async (args, thunkAPI) => {
     let response;
+
+    const state = thunkAPI.getState();
+    const token = selectUserToken(state);
+
     try {
-      response = await loginUser(userCreds);
+      response = await logoutUser(token);
     }
     catch (error) {
       if (error.name === "AxiosError") {

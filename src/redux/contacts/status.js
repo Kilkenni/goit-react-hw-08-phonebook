@@ -1,40 +1,36 @@
 import { createReducer } from "@reduxjs/toolkit";
 
-import { getContactsOperation, addContactOperation, deleteContactOperation } from "./asyncOperations";
+import { getContactsOp, addContactOp, deleteContactOp } from "./ops";
 
 // idle | loading/adding/deleting | success | error
 export const contactStatus = createReducer("idle", {
-  [getContactsOperation.pending]: (status, action) => {
+  [getContactsOp.pending]: (status, action) => {
     return "loading";
   },
-  [getContactsOperation.fulfilled]: (status, action) => {
+  [getContactsOp.fulfilled]: (status, action) => {
     return "success";
   },
-  [getContactsOperation.rejected]: (status, action) => {
+  [getContactsOp.rejected]: (status, action) => {
     return "error";
   },
 
-  [addContactOperation.pending]: (status, action) => {
+  [addContactOp.pending]: (status, action) => {
     return "adding";
   },
-  [addContactOperation.fulfilled]: (status, action) => {
+  [addContactOp.fulfilled]: (status, action) => {
     return "success";
   },
-  [addContactOperation.rejected]: (status, action) => {
+  [addContactOp.rejected]: (status, action) => {
     return "error";
   },
 
-  [deleteContactOperation.pending]: (status, action) => {
+  [deleteContactOp.pending]: (status, action) => {
     return "deleting";
   },
-  [deleteContactOperation.fulfilled]: (status, action) => {
+  [deleteContactOp.fulfilled]: (status, action) => {
     return "success";
   },
-  [deleteContactOperation.rejected]: (status, action) => {
+  [deleteContactOp.rejected]: (status, action) => {
     return "error";
   },
 });
-
-export const selectStatus = (state) => {
-  return state.contacts.status;
-}

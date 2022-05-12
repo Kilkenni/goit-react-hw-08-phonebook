@@ -2,10 +2,11 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { lazy, Suspense } from "react";
-import { useSelector } from "react-redux";
+import { lazy, Suspense, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import { selectLoginStatus } from "redux/auth/authSlice";
+import { refreshUserOp } from "redux/auth/ops";
 
 import NavBar from "./NavBar";
 import UserMenu from "./UserMenu";
@@ -15,6 +16,15 @@ const RegisterPage = lazy(() => import("./Layouts/RegisterPage"));
 
 export const App = () => {
   const isLoggedIn = useSelector(selectLoginStatus);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(refreshUserOp());
+  }, [dispatch])
+  /*if (!isLoggedIn) {
+    dispatch(refreshUserOp());
+    console.log("restoring session")
+  }*/
 
   return (
     <div

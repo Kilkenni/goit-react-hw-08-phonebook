@@ -1,31 +1,52 @@
 import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
 
 import ContactItem from "../ContactItem";
 //import propTypes from "prop-types";
 import styles from "./ContactList.module.css"
 
-import { selectItems } from "../../redux/contacts/items";
+/*import { selectItems } from "../../redux/contacts/items";
 import { selectFilter } from "redux/contacts/filter";
-import { selectStatus } from "redux/contacts/status";
+import { selectStatus } from "redux/contacts/status";*/
+import { selectItems, selectFilter, selectStatus } from "redux/contacts/contactsSlice";
 
-import { getContactsOperation, deleteContactOperation } from "redux/contacts/asyncOperations";
+import { getContactsOp/*, deleteContactOp */} from "redux/contacts/ops";
+import { deleteContactWithFeedback } from "redux/contacts/ops/deleteContactOp";
 
 const ContactList = () => {
+    const [isContactFetched, setIsContactFetched] = useState(false);
 
     const lowCaseFilter = useSelector(selectFilter).toLowerCase();
 
     const dispatch = useDispatch();
     
     const contacts = useSelector(selectItems);
-    const reduxStatus = useSelector(selectStatus);
+    const contactStatus = useSelector(selectStatus);
 
-    if (!contacts) {
-        //dispatch(getContacts());
-        dispatch(getContactsOperation());
-    }
+    useEffect(() => {
+        //let promise = null;
+        if (!isContactFetched) {
+            /*promise = */dispatch(getContactsOp());
+            //console.log(promise);
+            setIsContactFetched(true);
+        }   
+        return () => {
+            /*if (promise !== null) {
+               promise.abort(); 
+            }*/
+            //setIsContactFetched(false);
+        }
+    }, [isContactFetched, dispatch]);
+
+    /*function deleteContactById(id) {
+        //console.log(`Trying to delete contact ${id}`);
+        //dispatch(deleteContactOp(id))
+        deleteContactWithFeedback(id);
+        
+    }*/
 
     return (<>
-        {(reduxStatus === "loading") && <p>[Loading contacts]</p>}
+        {(contactStatus === "loading") && <p>[Loading contacts]</p>}
         {(contacts && (contacts.length === 0)) &&
             <p>No contacts so far...</p>}
         {(contacts && (contacts.length > 0)) &&
@@ -36,11 +57,11 @@ const ContactList = () => {
                         <li key={contact.id} className={styles.contact}>
                             <ContactItem
                                 name={contact.name}
-                                number={contact.phone}
+                                number={contact.number}
                             />
                             <button
                                 type="button"
-                                onClick={() => dispatch(deleteContactOperation(contact.id))}
+                                onClick={() => deleteContactWithFeedback(contact.id)}
                                 className={styles.btnDeleteContact}
                             >Delete contact
                             </button>

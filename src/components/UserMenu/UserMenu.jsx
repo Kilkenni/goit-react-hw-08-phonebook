@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+//import { useNavigate } from "react-router-dom";
 
 import { selectUserName, selectUserEmail } from "redux/auth/authSlice";
 import { logoutUserOp } from "redux/auth/ops";
@@ -9,12 +10,14 @@ export default function UserMenu(props) {
   const userEmail = useSelector(selectUserEmail);
   const userName = useSelector(selectUserName);
   const dispatch = useDispatch();
+  //const navigate = useNavigate();
 
-  function logout() {
-    console.log("Logging out");
-
+  async function logout() {
     //dispatch logout
-    dispatch(logoutUserOp()); //token is retrieved inside op
+    /*const result = await */dispatch(logoutUserOp()); //token is retrieved inside op
+    /*if (result?.meta?.requestStatus === "fulfilled") {
+      navigate("/");
+    }*/
   }
 
   return (

@@ -6,7 +6,7 @@ export default function NavBar(props) {
       <ul>
         <li>
           <NavLink end to={'/'} className={({ isActive }) => isActive ? "activeLink" : "inactiveLink"} >
-            Home
+            Login
           </NavLink>
         </li>
 
@@ -19,12 +19,6 @@ export default function NavBar(props) {
         <li>
           <NavLink end to={'/register'} className={({ isActive }) => isActive ? "activeLink" : "inactiveLink"} >
             Register
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink end to={'/login'} className={({ isActive }) => isActive ? "activeLink" : "inactiveLink"} >
-            Login
           </NavLink>
         </li>
       </ul>

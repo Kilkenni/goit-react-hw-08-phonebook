@@ -5,17 +5,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { lazy, Suspense, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { selectLoginStatus } from "redux/auth/authSlice";
+import { selectIsLoggedIn, selectIsRestoringSession } from "redux/auth/authSlice";
 import { refreshUserOp } from "redux/auth/ops";
 
 import NavBar from "./NavBar";
 import UserMenu from "./UserMenu";
+import { RestrictedRoute, PrivateRoute } from "./Routes";
 const ContactsPage = lazy(() => import("./Layouts/ContactsPage"));
 const LoginPage = lazy(() => import("./Layouts/LoginPage"));
 const RegisterPage = lazy(() => import("./Layouts/RegisterPage"));
 
 export const App = () => {
-  const isLoggedIn = useSelector(selectLoginStatus);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const isRestoringSession = useSelector(selectIsRestoringSession);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -40,27 +42,38 @@ export const App = () => {
       <NavBar />
       {isLoggedIn && <UserMenu />}
 
-      <Routes>
-        <Route exact path="/" element={
-          <Suspense fallback={<p>Loading...</p>}>
-            <LoginPage />
-          </Suspense>  
-        }/>
+      {isRestoringSession ?
+        <p>Restoring last session...</p>
+        :
+        <Routes>
+          <Route exact path="/" element={
+            <RestrictedRoute fallbackRoute={"/contacts"}>
+              <Suspense fallback={<p>Loading...</p>}>
+                <LoginPage />
+              </Suspense>
+            </RestrictedRoute>
+          }/>
 
-        <Route exact path="/register" element={
-          <Suspense fallback={<p>Loading...</p>}>
-            <RegisterPage />
-          </Suspense>
-        }/>
+          <Route exact path="/register" element={
+            <RestrictedRoute fallbackRoute={"/contacts"}>
+              <Suspense fallback={<p>Loading...</p>}>
+                <RegisterPage />
+              </Suspense>
+            </RestrictedRoute>
+          }/>
 
-        <Route exact path="/contacts" element={
-          <Suspense fallback={<p>Loading...</p>}>
-            <ContactsPage />
-          </Suspense>   
-        } />
+          <Route exact path="/contacts" element={
+            <PrivateRoute>
+              <Suspense fallback={<p>Loading...</p>}>
+                <ContactsPage />
+              </Suspense>
+            </PrivateRoute>
+          } />
 
-        <Route path="*" element={<Navigate to={"/"} replace={true} />} />
-      </Routes>
+          <Route path="*" element={<Navigate to={"/"} replace={true} />} />         
+        </Routes>
+      }
+      
       <ToastContainer />
     </div>
   );
